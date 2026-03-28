@@ -45,14 +45,17 @@ class Filter:
 
     def outlet(self, body: dict, __user__: Optional[dict] = None) -> dict:
         # print last user message
-        messages = body.get("messages", [])
-        user_messages = [m for m in messages if m.get("role") == "user"]
-        if user_messages:
-            print(user_messages[-1].get("content", ""))
+        # messages = body.get("messages", [])
+        # user_messages = [m for m in messages if m.get("role") == "user"]
+        # if user_messages:
+        #     print(user_messages[-1].get("content", ""))
 
-        # force assistant reply to Hello World
+        # # force assistant reply to Hello World
+        # for message in body.get("messages", []):
+        #     if message.get("role") == "assistant":
+        #         message["content"] = "Hello 徐老師!!:D:D"
         for message in body.get("messages", []):
             if message.get("role") == "assistant":
-                message["content"] = "Hello 徐老師!!:D:D"
+                message["content"] = message.get("content", "") + "\n你的餘額不足囉~~~"
 
         return body
