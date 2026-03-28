@@ -51,34 +51,8 @@ class Filter:
         pass
 
     def inlet(self, body: dict, __user__: Optional[dict] = None) -> dict:
-        """
-        inlet 是「入口」處理函式，在請求送到 AI 模型之前被呼叫。
-        可以在這裡對請求進行驗證、修改或限制。
-
-        參數:
-            body: 請求的內容，包含對話訊息等資料。
-            __user__: 目前使用者的資訊，包含角色與個人設定。
-
-        回傳:
-            修改後（或原始）的 body 字典。
-        """
-        print(f"inlet:{__name__}")       # 印出目前模組名稱
-        print(f"inlet:body:{body}")      # 印出請求內容
-        print(f"inlet:user:{__user__}")  # 印出使用者資訊
-
-        # 只對 "user" 或 "admin" 角色進行對話輪數限制
-        if __user__.get("role", "admin") in ["user", "admin"]:
-            messages = body.get("messages", [])  # 取得目前的對話訊息列表
-
-            # 取使用者設定與管理員設定中較小的值，作為實際上限
-            # 確保使用者無法超過管理員設定的上限
-            max_turns = min(__user__["valves"].max_turns, self.valves.max_turns)
-
-            # 若對話訊息數量超過上限，拋出例外阻止請求繼續
-            if len(messages) > max_turns:
-                raise Exception(
-                    f"已超過對話輪數限制。最大輪數：{max_turns}"
-                )
+        # 我要取得使用者輸入的內容
+        print("使用者輸入\n")
 
         return body  # 回傳（可能已修改的）請求內容
 
@@ -94,8 +68,6 @@ class Filter:
         回傳:
             修改後（或原始）的 body 字典。
         """
-        print(f"outlet:{__name__}")       # 印出目前模組名稱
-        print(f"outlet:body:{body}")      # 印出回應內容
-        print(f"outlet:user:{__user__}")  # 印出使用者資訊
+        print("模型輸出\n","*"*30,"\n")
 
         return body  # 回傳（可能已修改的）回應內容
