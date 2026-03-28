@@ -38,12 +38,21 @@ class Filter:
         pass
 
     def inlet(self, body: dict, __user__: Optional[dict] = None) -> dict:
-        print("使用者輸入:")
-        print(body.get("messages", [])[-1].get("content", "") if body.get("messages") else "")
+        # print("使用者輸入:")
+        # print(body.get("messages", [])[-1].get("content", "") if body.get("messages") else "")
         
         return body
 
     def outlet(self, body: dict, __user__: Optional[dict] = None) -> dict:
-        print("模型輸出:")
-        print(body.get("messages", [])[-1].get("content", "") if body.get("messages") else "")
+        # print last user message
+        messages = body.get("messages", [])
+        user_messages = [m for m in messages if m.get("role") == "user"]
+        if user_messages:
+            print(user_messages[-1].get("content", ""))
+
+        # force assistant reply to Hello World
+        for message in body.get("messages", []):
+            if message.get("role") == "assistant":
+                message["content"] = "Hello 徐老師!!:D:D"
+
         return body
